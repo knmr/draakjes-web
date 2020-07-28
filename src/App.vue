@@ -16,15 +16,7 @@ export default Vue.extend({
 	name: 'App',
 	data() {
 		return {
-			menuItems: [
-				{
-					iconStyle: 'fab',
-					iconName: 'discord',
-					name: 'Discord',
-					target: '_blank',
-					href: '#',
-				},
-			],
+			menuItems: [],
 		};
 	},
 	components: {
