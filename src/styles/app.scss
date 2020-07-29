@@ -2,52 +2,65 @@
 
 /* quicksand-300 - latin */
 @font-face {
-	font-family: 'Quicksand';
-	font-style: normal;
-	font-weight: 300;
-	src: url('../fonts/quicksand-v21-latin-300.eot'); /* IE9 Compat Modes */
-	src: local(''), url('../fonts/quicksand-v21-latin-300.eot?#iefix') format('embedded-opentype'),
-		/* IE6-IE8 */ url('../fonts/quicksand-v21-latin-300.woff2') format('woff2'),
-		/* Super Modern Browsers */ url('../fonts/quicksand-v21-latin-300.woff') format('woff'),
-		/* Modern Browsers */ url('../fonts/quicksand-v21-latin-300.ttf') format('truetype'),
-		/* Safari, Android, iOS */ url('../fonts/quicksand-v21-latin-300.svg#Quicksand') format('svg'); /* Legacy iOS */
+    font-family: 'Quicksand';
+    font-style: normal;
+    font-weight: 300;
+    src: url('../fonts/quicksand-v21-latin-300.eot');
+    /* IE9 Compat Modes */
+    src: local(''), url('../fonts/quicksand-v21-latin-300.eot?#iefix') format('embedded-opentype'),
+        /* IE6-IE8 */
+        url('../fonts/quicksand-v21-latin-300.woff2') format('woff2'),
+        /* Super Modern Browsers */
+        url('../fonts/quicksand-v21-latin-300.woff') format('woff'),
+        /* Modern Browsers */
+        url('../fonts/quicksand-v21-latin-300.ttf') format('truetype'),
+        /* Safari, Android, iOS */
+        url('../fonts/quicksand-v21-latin-300.svg#Quicksand') format('svg');
+    /* Legacy iOS */
 }
+
 /* quicksand-regular - latin */
 @font-face {
-	font-family: 'Quicksand';
-	font-style: normal;
-	font-weight: 400;
-	src: url('../fonts/quicksand-v21-latin-regular.eot'); /* IE9 Compat Modes */
-	src: local(''), url('../fonts/quicksand-v21-latin-regular.eot?#iefix') format('embedded-opentype'),
-		/* IE6-IE8 */ url('../fonts/quicksand-v21-latin-regular.woff2') format('woff2'),
-		/* Super Modern Browsers */ url('../fonts/quicksand-v21-latin-regular.woff') format('woff'),
-		/* Modern Browsers */ url('../fonts/quicksand-v21-latin-regular.ttf') format('truetype'),
-		/* Safari, Android, iOS */ url('../fonts/quicksand-v21-latin-regular.svg#Quicksand') format('svg'); /* Legacy iOS */
+    font-family: 'Quicksand';
+    font-style: normal;
+    font-weight: 400;
+    src: url('../fonts/quicksand-v21-latin-regular.eot');
+    /* IE9 Compat Modes */
+    src: local(''), url('../fonts/quicksand-v21-latin-regular.eot?#iefix') format('embedded-opentype'),
+        /* IE6-IE8 */
+        url('../fonts/quicksand-v21-latin-regular.woff2') format('woff2'),
+        /* Super Modern Browsers */
+        url('../fonts/quicksand-v21-latin-regular.woff') format('woff'),
+        /* Modern Browsers */
+        url('../fonts/quicksand-v21-latin-regular.ttf') format('truetype'),
+        /* Safari, Android, iOS */
+        url('../fonts/quicksand-v21-latin-regular.svg#Quicksand') format('svg');
+    /* Legacy iOS */
 }
 
 * {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	outline: 0;
-	font-size: 100%;
-	vertical-align: baseline;
-	background: transparent;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+    vertical-align: baseline;
 }
 
 body {
-	background-color: $yellow;
+    background-color: $yellow;
 }
 
 .container-xl {
-	max-width: 1280px;
+    max-width: 1280px;
 }
 
 .container-lg {
-	max-width: 1012px;
+    max-width: 1012px;
 }
+
 .container-xl,
 .container-lg {
-	margin-right: auto;
-	margin-left: auto;
+    margin-right: auto;
+    margin-left: auto;
 }

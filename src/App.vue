@@ -1,9 +1,12 @@
 <template>
-	<div id="app" class="container">
-		<Navbar :items="menuItems" />
-		<Home />
-		<Mascot />
-	</div>
+  <div
+    id="app"
+    class="container"
+  >
+    <Navbar :items="menuItems" />
+    <Home />
+    <Mascot />
+  </div>
 </template>
 
 <script lang="ts">
@@ -24,6 +27,7 @@ export default Vue.extend({
 		Navbar,
 		Mascot,
 	},
+	mounted() {},
 });
 </script>
 
