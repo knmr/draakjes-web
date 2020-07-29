@@ -2,6 +2,7 @@
 	<div class="home container-xl">
 		<h3>Installed CLI Plugins</h3>
 		<div>
+			<p>Hmm</p>
 			<p>
 				Suspendisse efficitur enim eget justo convallis elementum. Donec et tortor erat. Nulla ut
 				rutrum turpis. Aliquam purus augue, bibendum et finibus at, commodo ac tellus. Nunc ut leo
