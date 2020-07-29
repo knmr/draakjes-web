@@ -1,58 +1,101 @@
 <template>
-	<div class="home container-xl">
-		<div>name:</div>
-		<input v-model="sender" placeholder="Your name" />
-		<div>Message:</div>
-		<input v-model="text" placeholder="Your message" />
-		<div>
-			<button type="button" @click="sendMessage">Send message!</button>
+	<div class="home container-xlarge">
+		<div v-if="needsDisplayName">
+			<div>name:</div>
+			<input id="username" v-model="newDisplayName" placeholder="Your name" />
+			<button type="button" @click="setName">Set name</button>
 		</div>
-		<div>
+		<div v-else>
+			<div>Message:</div>
+			<input v-model="text" placeholder="Your message" />
+			<div>
+				<button type="button" @click="sendMessage">Send message!</button>
+			</div>
+		</div>
+		<div v-if="messagesDescending && messagesDescending.length > 0">
 			<h3>Messages</h3>
-			<p v-for="(msg, index) in messagesDescending" :key="index">{{ msg.sender }} - {{ msg.text }}</p>
+			<p
+				v-for="(msg, index) in messagesDescending"
+				:key="index"
+			>{{ msg.uid }} - {{ msg.name }} - {{ msg.message }} - {{ msg.timestamp }} -- {{ msg.time}} -- {{ msg.date}}</p>
 		</div>
 	</div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { db } from '../storage/firebase';
+import { db, auth } from '../storage/firebase';
+import { Message } from '../storage/definitions';
 export default Vue.extend({
 	name: 'Home',
-	data: () => ({ messages: [], sender: '', text: '' }),
-
+	data: () => ({
+		messages: [] as Message[],
+		newDisplayName: '',
+		text: '',
+		displayName: '',
+		isLoggedIn: false,
+	}),
 	firebase: {
 		messages: db.ref('messages').limitToLast(20),
 	},
+	mounted() {
+		this.loginAnonymous();
+	},
 	methods: {
 		sendMessage() {
-			const newChild = db.ref('messages').push();
-			const dbValue = { sender: this.sender, text: this.text, timestamp: Date.now() };
-			newChild.set(dbValue);
+			if (auth.currentUser && auth.currentUser.displayName) {
+				const newChild = db.ref('messages').push();
+				const dbValue = {
+					uid: auth.currentUser.uid,
+					name: auth.currentUser.displayName,
+					message: this.text,
+					timestamp: Date.now(),
+				} as Message;
+				newChild.set(dbValue);
+			}
+		},
+		loginAnonymous() {
+			auth.onAuthStateChanged((user) => {
+				if (user) {
+					this.displayName = user.displayName ?? '';
+					this.isLoggedIn = true;
+				} else {
+					this.newDisplayName = '';
+					this.displayName = '';
+					this.isLoggedIn = false;
+				}
+			});
+			auth.signInAnonymously().catch((error) => {});
+		},
+		setName() {
+			if (!this.newDisplayName) return;
+			if (auth.currentUser)
+				auth.currentUser
+					.updateProfile({
+						displayName: this.newDisplayName,
+					})
+					.then((e) => {
+						this.displayName = this.newDisplayName;
+					})
+					.catch((error) => {
+						console.error(error);
+					});
 		},
 	},
 	computed: {
 		messagesDescending() {
-			return this.messages.slice().reverse();
+			const msgs = this.messages.slice().reverse();
+			return msgs.map((e) => {
+				return {
+					...e,
+					time: new Date(e.timestamp).toLocaleTimeString(),
+					date: new Date(e.timestamp).toLocaleDateString(),
+				};
+			});
+		},
+		needsDisplayName() {
+			return this.isLoggedIn && this.displayName === '';
 		},
 	},
 });
 </script>
-
-<style lang="scss">
-// @import "./styles/app.scss";
-h3 {
-	margin: 40px 0 0;
-}
-ul {
-	list-style-type: none;
-	padding: 0;
-}
-li {
-	display: inline-block;
-	margin: 0 10px;
-}
-a {
-	color: #42b983;
-}
-</style>

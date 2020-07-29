@@ -1,6 +1,6 @@
 <template>
 	<div class="navbar">
-		<div class="container-xl">
+		<div class="container-xlarge">
 			<a target="_blank" href="https://discord.gg/0gmeEATqIOx8gP8l">
 				<svg width="124" height="34" viewBox="0 0 124 34" class="logo-3LF899">
 					<g fill="currentColor">
@@ -33,24 +33,21 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-@import '../styles/colors.scss';
-.topnav {
-	overflow: hidden;
-	background-color: #333;
+@import '../styles/settings.scss';
+
+@media screen and (max-width: $xlarge) {
+	.navbar {
+		padding-left: 9px;
+	}
 }
 
-.topnav a {
-	float: left;
-	color: #f2f2f2;
-	text-align: center;
-	padding: 14px 16px;
-	text-decoration: none;
-	font-size: 17px;
-}
-
-.topnav .topnav a.active {
-	background-color: #4caf50;
-	color: white;
+@media screen and (max-width: $medium) {
+	.navbar {
+		max-height: 54px;
+		a {
+			padding: 10px 12px !important;
+		}
+	}
 }
 
 .navbar {
@@ -64,16 +61,16 @@ export default Vue.extend({
 			display: block;
 		}
 		&:hover {
-			background-color: #ddd;
+			transform: skew(-15deg) scale(1.1);
+			box-shadow: 0 0 1rem $darkest-blue;
 			color: $red;
+			background-color: #ddd;
 		}
 
 		float: left;
 		color: #f2f2f2;
-		// text-align: center;
 		padding: 14px 16px;
 		text-decoration: none;
-		// font-size: 1.5em;
 	}
 }
 </style>
