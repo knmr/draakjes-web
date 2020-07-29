@@ -1,30 +1,17 @@
 <template>
-  <div class="home container-xl">
-    <div>name:</div>
-    <input
-      v-model="sender"
-      placeholder="Your name"
-    >
-    <div>Message:</div>
-    <input
-      v-model="text"
-      placeholder="Your message"
-    >
-    <div>
-      <button
-        type="button"
-        @click="sendMessage"
-      >Send message!</button>
-    </div>
-    <div>
-      <h3>Messages</h3>
-      <p
-        v-for="(msg, index) in messages"
-        :key="index"
-      >{{msg.sender}} - {{msg.text}}</p>
-    </div>
-
-  </div>
+	<div class="home container-xl">
+		<div>name:</div>
+		<input v-model="sender" placeholder="Your name" />
+		<div>Message:</div>
+		<input v-model="text" placeholder="Your message" />
+		<div>
+			<button type="button" @click="sendMessage">Send message!</button>
+		</div>
+		<div>
+			<h3>Messages</h3>
+			<p v-for="(msg, index) in messagesDescending" :key="index">{{ msg.sender }} - {{ msg.text }}</p>
+		</div>
+	</div>
 </template>
 
 <script lang="ts">
@@ -35,14 +22,18 @@ export default Vue.extend({
 	data: () => ({ messages: [], sender: '', text: '' }),
 
 	firebase: {
-		messages: db.ref('messages'),
+		messages: db.ref('messages').limitToLast(20),
 	},
 	methods: {
 		sendMessage() {
 			const newChild = db.ref('messages').push();
 			const dbValue = { sender: this.sender, text: this.text, timestamp: Date.now() };
-			console.log(dbValue);
 			newChild.set(dbValue);
+		},
+	},
+	computed: {
+		messagesDescending() {
+			return this.messages.slice().reverse();
 		},
 	},
 });
