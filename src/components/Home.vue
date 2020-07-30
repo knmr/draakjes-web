@@ -17,7 +17,7 @@
 	</div>
 </template>
 
-<script lang="ts">
+<script>
 import Vue from 'vue';
 import MessageInput from './MessageInput.vue';
 import MessageComponent from './Message.vue';
@@ -34,21 +34,13 @@ export default Vue.extend({
 		const chatId = `chat-${Date.now()}`;
 		return {
 			chatId,
-			messages: [] as Message[],
-			newDisplayName: '' as string,
-			displayName: '' as string,
-			isLoggedIn: false as boolean,
-			initialDataLoaded: false as boolean,
+			messages: [],
+			newDisplayName: '',
+			displayName: '',
+			isLoggedIn: false,
+			initialDataLoaded: false,
 		};
 	},
-	// @Watch('messages')
-	// messagesChanged(_newVal) {
-	// 	console.log('messages');
-	// 	if (!this.initialDataLoaded) {
-	// 		this.initialDataLoaded = true;
-	// 		this.scrollChatDown();
-	// 	}
-	// },
 	firebase: {
 		messages: db.ref('messages').limitToLast(100),
 	},
@@ -62,7 +54,7 @@ export default Vue.extend({
 				chatDiv.scrollTop = chatDiv.scrollHeight;
 			}
 		},
-		sendMessage(message: string) {
+		sendMessage(message) {
 			if (auth.currentUser && auth.currentUser.displayName) {
 				const newChild = db.ref('messages').push();
 				const dbValue = {
@@ -70,11 +62,11 @@ export default Vue.extend({
 					name: auth.currentUser.displayName,
 					message,
 					timestamp: Date.now(),
-				} as Message;
+				};
 				newChild.set(dbValue);
 			}
 		},
-		loginAnonymous(): void {
+		loginAnonymous() {
 			auth.onAuthStateChanged((user) => {
 				if (user) {
 					this.displayName = user.displayName ?? '';
@@ -103,7 +95,7 @@ export default Vue.extend({
 		},
 	},
 	computed: {
-		displayMessages(): MessageInterface[] {
+		displayMessages() {
 			const myUid = auth && auth.currentUser ? auth.currentUser.uid : '';
 			return this.messages.map((e) => {
 				return {
@@ -112,17 +104,20 @@ export default Vue.extend({
 				};
 			});
 		},
-		needsDisplayName(): boolean {
+		needsDisplayName() {
 			return this.isLoggedIn && this.displayName === '';
 		},
 	},
 });
 </script>
 <style lang="scss">
+@import '../styles/settings.scss';
 .chat {
-	background: hotpink;
 	.messages {
+		background: $orange;
 		height: calc(80vh);
+		padding-left: 5px;
+		padding-right: 5px;
 		overflow-y: scroll;
 	}
 }
