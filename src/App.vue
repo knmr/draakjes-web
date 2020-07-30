@@ -1,19 +1,14 @@
 <template>
-  <div
-    id="app"
-    class="container"
-  >
-    <Navbar :items="menuItems" />
-    <Home />
-    <Mascot />
-  </div>
+	<div id="app">
+		<Navbar :items="menuItems" />
+		<Home />
+	</div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import Home from './components/Home.vue';
 import Navbar from './components/Navbar.vue';
-import Mascot from './components/Mascot.vue';
 
 export default Vue.extend({
 	name: 'App',
@@ -25,7 +20,6 @@ export default Vue.extend({
 	components: {
 		Home,
 		Navbar,
-		Mascot,
 	},
 	mounted() {},
 });
@@ -33,6 +27,16 @@ export default Vue.extend({
 
 <style lang="scss">
 #app {
+	@media (min-width: 768px) {
+		display: flex;
+		flex-direction: column;
+		min-height: 100vh;
+		.container {
+			display: grid;
+			grid-template-columns: 200px 1fr 200px;
+			grid-template-rows: auto 1fr auto;
+		}
+	}
 	font-family: 'Quicksand', sans-serif, Verdana, Geneva, sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;

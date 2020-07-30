@@ -1,30 +1,20 @@
 <template>
-  <div class="home container-xlarge">
-    <div v-if="needsDisplayName">
-      <div>name:</div>
-      <input
-        id="username"
-        v-model="newDisplayName"
-        placeholder="Your name"
-      />
-      <button
-        type="button"
-        @click="setName"
-      >Set name</button>
-    </div>
-    <div v-else-if="isLoggedIn">
-      <div v-if="displayMessages && displayMessages.length > 0">
-        <h3>Messages</h3>
-        <MessageComponent
-          v-for="(msg, index) in displayMessages"
-          :key="index"
-          :msg="msg"
-        />
-        <div>Message:</div>
-        <MessageInput @send="sendMessage" />
-      </div>
-    </div>
-  </div>
+	<div class="home container-xlarge">
+		<div class="chat">
+			<div v-if="needsDisplayName">
+				<div>name:</div>
+				<input id="username" v-model="newDisplayName" placeholder="Your name" />
+				<button type="button" @click="setName">Set name</button>
+			</div>
+			<div v-else-if="isLoggedIn">
+				<div :id="chatId" class="messages">
+					<MessageComponent v-for="(msg, index) in displayMessages" :key="index" :msg="msg" />
+				</div>
+				<MessageInput @send="sendMessage" />
+			</div>
+		</div>
+		<div class="stats"></div>
+	</div>
 </template>
 
 <script lang="ts">
@@ -32,26 +22,46 @@ import Vue from 'vue';
 import MessageInput from './MessageInput.vue';
 import MessageComponent from './Message.vue';
 import { db, auth } from '../storage/firebase';
-import { Message } from '../storage/definitions';
+import { Message, MessageInterface } from '../storage/definitions';
+
 export default Vue.extend({
 	components: {
 		MessageInput,
 		MessageComponent,
 	},
 	name: 'Home',
-	data: () => ({
-		messages: [] as Message[],
-		newDisplayName: '',
-		displayName: '',
-		isLoggedIn: false,
-	}),
+	data() {
+		const chatId = `chat-${Date.now()}`;
+		return {
+			chatId,
+			messages: [] as Message[],
+			newDisplayName: '' as string,
+			displayName: '' as string,
+			isLoggedIn: false as boolean,
+			initialDataLoaded: false as boolean,
+		};
+	},
+	// @Watch('messages')
+	// messagesChanged(_newVal) {
+	// 	console.log('messages');
+	// 	if (!this.initialDataLoaded) {
+	// 		this.initialDataLoaded = true;
+	// 		this.scrollChatDown();
+	// 	}
+	// },
 	firebase: {
-		messages: db.ref('messages').limitToLast(20),
+		messages: db.ref('messages').limitToLast(100),
 	},
 	mounted() {
 		this.loginAnonymous();
 	},
 	methods: {
+		scrollChatDown() {
+			const chatDiv = document.getElementById(this.chatId);
+			if (chatDiv) {
+				chatDiv.scrollTop = chatDiv.scrollHeight;
+			}
+		},
 		sendMessage(message: string) {
 			if (auth.currentUser && auth.currentUser.displayName) {
 				const newChild = db.ref('messages').push();
@@ -64,7 +74,7 @@ export default Vue.extend({
 				newChild.set(dbValue);
 			}
 		},
-		loginAnonymous() {
+		loginAnonymous(): void {
 			auth.onAuthStateChanged((user) => {
 				if (user) {
 					this.displayName = user.displayName ?? '';
@@ -93,20 +103,40 @@ export default Vue.extend({
 		},
 	},
 	computed: {
-		displayMessages() {
+		displayMessages(): MessageInterface[] {
 			const myUid = auth && auth.currentUser ? auth.currentUser.uid : '';
 			return this.messages.map((e) => {
 				return {
 					...e,
-					time: new Date(e.timestamp).toLocaleTimeString(),
-					date: new Date(e.timestamp).toLocaleDateString(),
 					isMe: e.uid === myUid,
 				};
 			});
 		},
-		needsDisplayName() {
+		needsDisplayName(): boolean {
 			return this.isLoggedIn && this.displayName === '';
 		},
 	},
 });
 </script>
+<style lang="scss">
+.chat {
+	background: hotpink;
+	.messages {
+		height: calc(80vh);
+		overflow-y: scroll;
+	}
+}
+.stats {
+	background: purple;
+}
+
+.home > div {
+	width: 100%;
+}
+
+@media (min-width: 768px) {
+	.home > div {
+		width: 50%;
+	}
+}
+</style>

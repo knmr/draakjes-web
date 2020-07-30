@@ -539,10 +539,8 @@ export default Vue.extend({
 
 <style scoped lang="scss">
 .mascot {
-	float: right;
 	svg {
 		transform: scaleX(-1);
-		height: 30vh;
 		.cls-1 {
 			fill: #f96262;
 		}

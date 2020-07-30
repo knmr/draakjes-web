@@ -1,7 +1,7 @@
 <template>
-  <div class="message">
-    <div>{{msg.message}}{{getTime}}</div>
-  </div>
+	<div class="message" :class="{me : msg.isMe}">
+		<div>{{msg.message}}{{getTime}}</div>
+	</div>
 </template>
 
 <script lang="ts">
@@ -22,7 +22,10 @@ export default Vue.extend({
 	computed: {
 		getTime(): string {
 			if (this.msg) {
-				return `${this.msg.timestamp}`;
+				return new Date(this.msg.timestamp).toLocaleTimeString(navigator.language, {
+					hour: '2-digit',
+					minute: '2-digit',
+				});
 			}
 			return '';
 		},
@@ -34,16 +37,23 @@ export default Vue.extend({
 @import '../styles/settings.scss';
 .message {
 	width: 100%;
-	padding-right: 5%;
-	padding-left: 5%;
+	display: flex;
+	flex-direction: row;
+	&.me {
+		text-align: right;
+		flex-direction: row-reverse;
+		align-self: flex-end;
+		> div {
+			background: green;
+		}
+	}
 	> div {
+		word-break: break-word;
+		-webkit-flex-wrap: wrap;
+		flex-wrap: wrap;
+		background: $red;
 		max-width: 90%;
 		padding: 6px 7px 8px 9px;
 	}
-
-	&.me {
-		background: green;
-	}
-	background: red;
 }
 </style>
