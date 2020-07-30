@@ -5,6 +5,8 @@
       class="textarea"
       role="textbox"
       contenteditable
+      @keydown="onKeyDown"
+      @keyup="onKeyUp"
     ></span>
     <a
       class="button"
@@ -23,6 +25,7 @@ export default Vue.extend({
 		const sendId = `send-input-${Date.now()}`;
 		return {
 			sendId,
+			shiftPressed: false,
 		};
 	},
 	components: {
@@ -30,6 +33,20 @@ export default Vue.extend({
 	},
 	name: 'MessageInput',
 	methods: {
+		onKeyDown(e: KeyboardEvent) {
+			if (e.key === 'Shift') {
+				this.shiftPressed = true;
+			} else if (e.key === 'Enter' && !this.shiftPressed) {
+				e.preventDefault();
+				e.stopPropagation();
+				this.send();
+			}
+		},
+		onKeyUp(e: KeyboardEvent) {
+			if (e.key === 'Shift') {
+				this.shiftPressed = false;
+			}
+		},
 		send() {
 			const sendInput = document.getElementById(this.sendId);
 			if (!sendInput) return;

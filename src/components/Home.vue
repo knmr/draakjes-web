@@ -13,15 +13,16 @@
       >Set name</button>
     </div>
     <div v-else-if="isLoggedIn">
-      <div>Message:</div>
-      <MessageInput @send="sendMessage" />
-    </div>
-    <div v-if="messagesDescending && messagesDescending.length > 0">
-      <h3>Messages</h3>
-      <p
-        v-for="(msg, index) in messagesDescending"
-        :key="index"
-      >{{ msg.uid }} - {{ msg.name }} - {{ msg.message }} - {{ msg.timestamp }} -- {{ msg.time}} -- {{ msg.date}}</p>
+      <div v-if="displayMessages && displayMessages.length > 0">
+        <h3>Messages</h3>
+        <MessageComponent
+          v-for="(msg, index) in displayMessages"
+          :key="index"
+          :msg="msg"
+        />
+        <div>Message:</div>
+        <MessageInput @send="sendMessage" />
+      </div>
     </div>
   </div>
 </template>
@@ -29,11 +30,13 @@
 <script lang="ts">
 import Vue from 'vue';
 import MessageInput from './MessageInput.vue';
+import MessageComponent from './Message.vue';
 import { db, auth } from '../storage/firebase';
 import { Message } from '../storage/definitions';
 export default Vue.extend({
 	components: {
 		MessageInput,
+		MessageComponent,
 	},
 	name: 'Home',
 	data: () => ({
@@ -90,13 +93,14 @@ export default Vue.extend({
 		},
 	},
 	computed: {
-		messagesDescending() {
-			const msgs = this.messages.slice().reverse();
-			return msgs.map((e) => {
+		displayMessages() {
+			const myUid = auth && auth.currentUser ? auth.currentUser.uid : '';
+			return this.messages.map((e) => {
 				return {
 					...e,
 					time: new Date(e.timestamp).toLocaleTimeString(),
 					date: new Date(e.timestamp).toLocaleDateString(),
+					isMe: e.uid === myUid,
 				};
 			});
 		},
