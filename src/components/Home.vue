@@ -1,37 +1,44 @@
 <template>
-	<div class="home container-xlarge">
-		<div v-if="needsDisplayName">
-			<div>name:</div>
-			<input id="username" v-model="newDisplayName" placeholder="Your name" />
-			<button type="button" @click="setName">Set name</button>
-		</div>
-		<div v-else>
-			<div>Message:</div>
-			<input v-model="text" placeholder="Your message" />
-			<div>
-				<button type="button" @click="sendMessage">Send message!</button>
-			</div>
-		</div>
-		<div v-if="messagesDescending && messagesDescending.length > 0">
-			<h3>Messages</h3>
-			<p
-				v-for="(msg, index) in messagesDescending"
-				:key="index"
-			>{{ msg.uid }} - {{ msg.name }} - {{ msg.message }} - {{ msg.timestamp }} -- {{ msg.time}} -- {{ msg.date}}</p>
-		</div>
-	</div>
+  <div class="home container-xlarge">
+    <div v-if="needsDisplayName">
+      <div>name:</div>
+      <input
+        id="username"
+        v-model="newDisplayName"
+        placeholder="Your name"
+      />
+      <button
+        type="button"
+        @click="setName"
+      >Set name</button>
+    </div>
+    <div v-else-if="isLoggedIn">
+      <div>Message:</div>
+      <MessageInput @send="sendMessage" />
+    </div>
+    <div v-if="messagesDescending && messagesDescending.length > 0">
+      <h3>Messages</h3>
+      <p
+        v-for="(msg, index) in messagesDescending"
+        :key="index"
+      >{{ msg.uid }} - {{ msg.name }} - {{ msg.message }} - {{ msg.timestamp }} -- {{ msg.time}} -- {{ msg.date}}</p>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
+import MessageInput from './MessageInput.vue';
 import { db, auth } from '../storage/firebase';
 import { Message } from '../storage/definitions';
 export default Vue.extend({
+	components: {
+		MessageInput,
+	},
 	name: 'Home',
 	data: () => ({
 		messages: [] as Message[],
 		newDisplayName: '',
-		text: '',
 		displayName: '',
 		isLoggedIn: false,
 	}),
@@ -42,13 +49,13 @@ export default Vue.extend({
 		this.loginAnonymous();
 	},
 	methods: {
-		sendMessage() {
+		sendMessage(message: string) {
 			if (auth.currentUser && auth.currentUser.displayName) {
 				const newChild = db.ref('messages').push();
 				const dbValue = {
 					uid: auth.currentUser.uid,
 					name: auth.currentUser.displayName,
-					message: this.text,
+					message,
 					timestamp: Date.now(),
 				} as Message;
 				newChild.set(dbValue);
@@ -65,7 +72,7 @@ export default Vue.extend({
 					this.isLoggedIn = false;
 				}
 			});
-			auth.signInAnonymously().catch((error) => {});
+			auth.signInAnonymously().catch((_error) => {});
 		},
 		setName() {
 			if (!this.newDisplayName) return;
@@ -74,7 +81,7 @@ export default Vue.extend({
 					.updateProfile({
 						displayName: this.newDisplayName,
 					})
-					.then((e) => {
+					.then((_e) => {
 						this.displayName = this.newDisplayName;
 					})
 					.catch((error) => {
