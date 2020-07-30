@@ -64,6 +64,9 @@ export default Vue.extend({
 					timestamp: Date.now(),
 				};
 				newChild.set(dbValue);
+				this.$nextTick(() => {
+					this.scrollChatDown();
+				});
 			}
 		},
 		loginAnonymous() {
