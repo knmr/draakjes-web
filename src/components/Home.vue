@@ -47,6 +47,14 @@ export default Vue.extend({
 	mounted() {
 		this.loginAnonymous();
 	},
+	watch: {
+		messages() {
+			if (!this.initialDataLoaded) {
+				this.initialDataLoaded = true;
+				setTimeout(this.scrollChatDown, 1000);
+			}
+		},
+	},
 	methods: {
 		scrollChatDown() {
 			const chatDiv = document.getElementById(this.chatId);
