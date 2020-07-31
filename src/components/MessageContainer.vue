@@ -1,7 +1,7 @@
 <template>
-  <div class="messages">
-    <slot />
-  </div>
+	<div class="message-container">
+		<slot />
+	</div>
 </template>
 
 <script lang="ts">
@@ -11,3 +11,9 @@ export default Vue.extend({
 	name: 'MessageContainer',
 });
 </script>
+<style lang="scss">
+.message-container {
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+</style>

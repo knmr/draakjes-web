@@ -1,42 +1,26 @@
 <template>
-  <div class="home container-xlarge">
-    <div class="row">
-      <div class="stats col">.</div>
-      <div class="chat col">
-        <div v-if="needsDisplayName">
-          <div>name:</div>
-          <input
-            id="username"
-            v-model="newDisplayName"
-            placeholder="Your name"
-          />
-          <button
-            type="button"
-            @click="setName"
-          >Set name</button>
-        </div>
-        <div
-          v-else-if="isLoggedIn"
-          class="card"
-        >
-          <div class="card-content">
-            <MessageContainer
-              :id="chatId"
-              @scroll.native="onScroll"
-            >
-              <MessageComponent
-                v-for="(msg, index) in displayMessages"
-                :key="index"
-                :msg="msg"
-                @message="onNewMessage"
-              />
-            </MessageContainer>
-            <MessageInput @send="sendMessage" />
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+	<div class="page">
+		<div class="row">
+			<div class="stats col">.</div>
+			<div class="chat col">
+				<h1>Latest comments</h1>
+				<div v-if="needsDisplayName">
+					<div>Name:</div>
+					<input id="username" v-model="newDisplayName" placeholder="Your name" />
+					<button type="button" @click="setName">Set name</button>
+				</div>
+				<MessageContainer :id="chatId" @scroll.native="onScroll">
+					<MessageComponent
+						v-for="(msg, index) in displayMessages"
+						:key="index"
+						:msg="msg"
+						@message="onNewMessage"
+					/>
+				</MessageContainer>
+				<MessageInput @send="sendMessage" />
+			</div>
+		</div>
+	</div>
 </template>
 
 <script>
@@ -147,26 +131,46 @@ export default Vue.extend({
 </script>
 <style lang="scss">
 @import '../styles/settings.scss';
-.chat {
-	.messages {
-		background: $orange;
-		height: calc(80vh);
-		padding-left: 5px;
-		padding-right: 5px;
-		overflow-y: scroll;
-	}
-}
-.stats {
-	background: purple;
-}
-
-.home .row > div {
-	--cols-per-row: 1;
-}
 
 @media (min-width: 768px) {
-	.home .row > div.col {
-		--cols-per-row: 2;
+	.stats {
+		--cols-per-row: 1.42857143;
+	}
+	.chat {
+		--cols-per-row: 3.333333;
+	}
+}
+
+.chat {
+	padding-top: 60px;
+	background-color: $light-cream;
+	display: flex;
+	flex-flow: column;
+
+	.message-container {
+		flex: 1;
+		overflow-x: hidden;
+		overflow-y: auto;
+		&::-webkit-scrollbar {
+			width: 4px;
+		}
+		&::-webkit-scrollbar-thumb {
+			border-radius: 2px;
+			background: rgba(0, 0, 0, 0.2);
+		}
+	}
+	.message-input {
+		max-height: 140px;
+	}
+
+	> h1 {
+		width: 80%;
+		margin: 0 auto;
+	}
+
+	.message {
+		width: 80%;
+		margin: 20px auto 0 auto;
 	}
 }
 </style>

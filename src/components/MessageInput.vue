@@ -1,20 +1,17 @@
 <template>
-  <div class="message-input">
-    <span
-      :id="sendId"
-      class="textarea"
-      role="textbox"
-      contenteditable
-      @keydown="onKeyDown"
-      @keyup="onKeyUp"
-    ></span>
-    <a
-      class="button"
-      @click="send"
-    >
-      <PaperPlane />
-    </a>
-  </div>
+	<div class="message-input">
+		<span
+			:id="sendId"
+			class="textarea"
+			role="textbox"
+			contenteditable
+			@keydown="onKeyDown"
+			@keyup="onKeyUp"
+		></span>
+		<a class="button" @click="send">
+			<PaperPlane />
+		</a>
+	</div>
 </template>
 
 <script lang="ts">
@@ -26,6 +23,7 @@ export default Vue.extend({
 		return {
 			sendId,
 			shiftPressed: false,
+			hasValue: false,
 		};
 	},
 	components: {
@@ -62,19 +60,20 @@ export default Vue.extend({
 
 <style lang="scss">
 @import '../styles/settings.scss';
-$border-radius: 10px;
 .message-input {
-	width: 100%;
+	border-bottom-left-radius: $default-border-radius;
+	border-bottom-right-radius: $default-border-radius;
+	padding: 10px;
+	background: #ff6e6a;
 	display: flex;
 	align-items: flex-end;
 	.textarea {
+		background: white;
 		width: 100%;
 		max-height: 30vh;
 		resize: none;
 		padding: 10px 10px;
-		border-radius: $border-radius;
-		border: 1px solid grey;
-		background: white;
+		border-radius: 21px;
 		overflow: hidden;
 		min-height: 20px;
 		line-height: 20px;
@@ -87,15 +86,13 @@ $border-radius: 10px;
 		height: 20px;
 		min-width: 40px;
 		padding: 10px 5px;
-		margin: 1px 1px 1px 5px;
-		border-radius: $border-radius;
+		// margin: 1px 1px 1px 5px;
 		text-decoration: none;
-		color: #ffffff;
-		background-color: $red;
+		color: white;
 		text-align: center;
 		transition: all 0.2s;
 		&:hover {
-			background-color: $orange;
+			color: #ffb5b2;
 		}
 	}
 }

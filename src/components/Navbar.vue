@@ -35,23 +35,8 @@ export default Vue.extend({
 <style lang="scss">
 @import '../styles/settings.scss';
 
-@media screen and (max-width: $xlarge) {
-	.navbar {
-		padding-left: 9px;
-	}
-}
-
-@media screen and (max-width: $medium) {
-	.navbar {
-		max-height: 54px;
-		a {
-			padding: 10px 12px !important;
-		}
-	}
-}
-
 .navbar {
-	background-color: $dark-blue;
+	background-color: blue;
 	overflow: hidden;
 	a {
 		transform: skew(-15deg);
@@ -62,8 +47,8 @@ export default Vue.extend({
 		}
 		&:hover {
 			transform: skew(-15deg) scale(1.1);
-			box-shadow: 0 0 1rem $darkest-blue;
-			color: $red;
+			box-shadow: 0 0 1rem blue;
+			color: red;
 			background-color: #ddd;
 		}
 
