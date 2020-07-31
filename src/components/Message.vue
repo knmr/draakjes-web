@@ -1,13 +1,19 @@
 <template>
-	<div class="message" :class="{ me: msg.isMe }">
-		<div>
-			<div class="name-time">
-				<div v-if="!msg.isMe" class="name">{{ msg.name }}</div>
-				<div class="time">{{ getTime }}</div>
-			</div>
-			<span>{{ msg.message }}</span>
-		</div>
-	</div>
+  <div
+    class="message"
+    :class="{ me: msg.isMe }"
+  >
+    <div>
+      <div class="name-time">
+        <div
+          v-if="!msg.isMe"
+          class="name"
+        >{{ msg.name }}</div>
+        <div class="time">{{ getTime }}</div>
+      </div>
+      <span>{{ msg.message }}</span>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -24,7 +30,9 @@ export default Vue.extend({
 		return {};
 	},
 	name: 'Message',
-	mounted() {},
+	mounted() {
+		this.$emit('message');
+	},
 	computed: {
 		getTime(): string {
 			if (this.msg) {

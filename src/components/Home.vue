@@ -1,33 +1,50 @@
 <template>
-	<div class="home container-xlarge">
-		<div class="chat">
-			<div v-if="needsDisplayName">
-				<div>name:</div>
-				<input id="username" v-model="newDisplayName" placeholder="Your name" />
-				<button type="button" @click="setName">Set name</button>
-			</div>
-			<div v-else-if="isLoggedIn">
-				<div :id="chatId" class="messages">
-					<MessageComponent v-for="(msg, index) in displayMessages" :key="index" :msg="msg" />
-				</div>
-				<MessageInput @send="sendMessage" />
-			</div>
-		</div>
-		<div class="stats"></div>
-	</div>
+  <div class="home container-xlarge">
+    <div class="chat">
+      <div v-if="needsDisplayName">
+        <div>name:</div>
+        <input
+          id="username"
+          v-model="newDisplayName"
+          placeholder="Your name"
+        />
+        <button
+          type="button"
+          @click="setName"
+        >Set name</button>
+      </div>
+      <div v-else-if="isLoggedIn">
+        <MessageContainer
+          :id="chatId"
+          @scroll.native="onScroll"
+        >
+          <MessageComponent
+            v-for="(msg, index) in displayMessages"
+            :key="index"
+            :msg="msg"
+            @message="onNewMessage"
+          />
+        </MessageContainer>
+        <MessageInput @send="sendMessage" />
+      </div>
+    </div>
+    <div class="stats"></div>
+  </div>
 </template>
 
 <script>
 import Vue from 'vue';
 import MessageInput from './MessageInput.vue';
 import MessageComponent from './Message.vue';
+import MessageContainer from './MessageContainer.vue';
 import { db, auth } from '../storage/firebase';
-import { Message, MessageInterface } from '../storage/definitions';
+import { debounce } from 'lodash';
 
 export default Vue.extend({
 	components: {
 		MessageInput,
 		MessageComponent,
+		MessageContainer,
 	},
 	name: 'Home',
 	data() {
@@ -38,7 +55,7 @@ export default Vue.extend({
 			newDisplayName: '',
 			displayName: '',
 			isLoggedIn: false,
-			initialDataLoaded: false,
+			autoScroll: true,
 		};
 	},
 	firebase: {
@@ -47,18 +64,20 @@ export default Vue.extend({
 	mounted() {
 		this.loginAnonymous();
 	},
-	watch: {
-		messages() {
-			if (!this.initialDataLoaded) {
-				this.initialDataLoaded = true;
-				setTimeout(this.scrollChatDown, 1000);
-			}
-		},
-	},
 	methods: {
-		scrollChatDown() {
+		onScroll: debounce(function(e) {
+			if (e.target.scrollHeight - e.target.scrollTop === e.target.offsetHeight) this.autoScroll = true;
+			else this.autoScroll = false;
+		}, 50),
+		onNewMessage() {
+			this.debouncedScroll();
+		},
+		debouncedScroll: debounce(function() {
+			this.scrollChatDown();
+		}, 50),
+		scrollChatDown(force = false) {
 			const chatDiv = document.getElementById(this.chatId);
-			if (chatDiv) {
+			if (chatDiv && (force || this.autoScroll)) {
 				chatDiv.scrollTop = chatDiv.scrollHeight;
 			}
 		},
@@ -72,9 +91,7 @@ export default Vue.extend({
 					timestamp: Date.now(),
 				};
 				newChild.set(dbValue);
-				this.$nextTick(() => {
-					this.scrollChatDown();
-				});
+				this.autoScroll = true;
 			}
 		},
 		loginAnonymous() {
