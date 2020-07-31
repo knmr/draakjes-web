@@ -9,7 +9,7 @@
 					<input id="username" v-model="newDisplayName" placeholder="Your name" />
 					<button type="button" @click="setName">Set name</button>
 				</div>
-				<MessageContainer :id="chatId" @scroll.native="onScroll">
+				<MessageContainer v-show="messagesLoaded" :id="chatId" @scroll.native="onScroll">
 					<MessageComponent
 						v-for="(msg, index) in displayMessages"
 						:key="index"
@@ -17,7 +17,8 @@
 						@message="onNewMessage"
 					/>
 				</MessageContainer>
-				<MessageInput @send="sendMessage" />
+				<MessageInput v-show="messagesLoaded" @send="sendMessage" />
+				<MessagesLoading v-show="!messagesLoaded" />
 			</div>
 		</div>
 	</div>
@@ -28,6 +29,7 @@ import Vue from 'vue';
 import MessageInput from './MessageInput.vue';
 import MessageComponent from './Message.vue';
 import MessageContainer from './MessageContainer.vue';
+import MessagesLoading from './MessagesLoading.vue';
 import { db, auth } from '../storage/firebase';
 import { debounce } from 'lodash';
 
@@ -36,6 +38,7 @@ export default Vue.extend({
 		MessageInput,
 		MessageComponent,
 		MessageContainer,
+		MessagesLoading,
 	},
 	name: 'Home',
 	data() {
@@ -47,6 +50,7 @@ export default Vue.extend({
 			displayName: '',
 			isLoggedIn: false,
 			autoScroll: true,
+			messagesLoaded: false,
 		};
 	},
 	firebase: {
@@ -62,7 +66,13 @@ export default Vue.extend({
 		}, 50),
 		onNewMessage() {
 			this.debouncedScroll();
+			this.setMessagesLoaded();
 		},
+		setMessagesLoaded: debounce(function() {
+			if (!this.messagesLoaded) {
+				this.messagesLoaded = true;
+			}
+		}, 10),
 		debouncedScroll: debounce(function() {
 			this.scrollChatDown();
 		}, 50),
