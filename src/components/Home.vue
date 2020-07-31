@@ -1,34 +1,41 @@
 <template>
   <div class="home container-xlarge">
-    <div class="chat">
-      <div v-if="needsDisplayName">
-        <div>name:</div>
-        <input
-          id="username"
-          v-model="newDisplayName"
-          placeholder="Your name"
-        />
-        <button
-          type="button"
-          @click="setName"
-        >Set name</button>
-      </div>
-      <div v-else-if="isLoggedIn">
-        <MessageContainer
-          :id="chatId"
-          @scroll.native="onScroll"
-        >
-          <MessageComponent
-            v-for="(msg, index) in displayMessages"
-            :key="index"
-            :msg="msg"
-            @message="onNewMessage"
+    <div class="row">
+      <div class="stats col">.</div>
+      <div class="chat col">
+        <div v-if="needsDisplayName">
+          <div>name:</div>
+          <input
+            id="username"
+            v-model="newDisplayName"
+            placeholder="Your name"
           />
-        </MessageContainer>
-        <MessageInput @send="sendMessage" />
+          <button
+            type="button"
+            @click="setName"
+          >Set name</button>
+        </div>
+        <div
+          v-else-if="isLoggedIn"
+          class="card"
+        >
+          <div class="card-content">
+            <MessageContainer
+              :id="chatId"
+              @scroll.native="onScroll"
+            >
+              <MessageComponent
+                v-for="(msg, index) in displayMessages"
+                :key="index"
+                :msg="msg"
+                @message="onNewMessage"
+              />
+            </MessageContainer>
+            <MessageInput @send="sendMessage" />
+          </div>
+        </div>
       </div>
     </div>
-    <div class="stats"></div>
   </div>
 </template>
 
@@ -153,13 +160,13 @@ export default Vue.extend({
 	background: purple;
 }
 
-.home > div {
-	width: 100%;
+.home .row > div {
+	--cols-per-row: 1;
 }
 
 @media (min-width: 768px) {
-	.home > div {
-		width: 50%;
+	.home .row > div.col {
+		--cols-per-row: 2;
 	}
 }
 </style>
