@@ -86,7 +86,6 @@ export default Vue.extend({
 		height: 20px;
 		min-width: 40px;
 		padding: 10px 5px;
-		// margin: 1px 1px 1px 5px;
 		text-decoration: none;
 		color: white;
 		text-align: center;

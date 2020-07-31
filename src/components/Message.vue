@@ -63,62 +63,6 @@ export default Vue.extend({
 	&:hover {
 		transform: scale(1.1);
 	}
-	&.tail {
-	}
 	background: white;
-	// display: flex;
-	// flex-direction: row;
-	// &.me {
-	// 	text-align: right;
-	// 	flex-direction: row-reverse;
-	// 	align-self: flex-end;
-	// 	> div {
-	// 		.name-time {
-	// 			color: black;
-	// 		}
-	// 	}
-	// }
-	// > div {
-	// 	white-space: pre-wrap;
-	// 	position: relative;
-	// 	margin-top: 1px;
-	// 	margin-bottom: 1px;
-	// 	border-radius: 7.5px;
-	// 	word-break: break-word;
-	// 	-webkit-flex-wrap: wrap;
-	// 	flex-wrap: wrap;
-	// 	max-width: 90%;
-	// 	padding: 6px 7px 8px 9px;
-	// 	text-align: left;
-	// 	min-width: 95px;
-	// 	> span.text {
-	// 		margin-right: 5px;
-	// 	}
-	// 	> .name-time {
-	// 		display: flex;
-	// 		width: 100%;
-	// 		color: red;
-	// 		font-weight: bold;
-	// 		font-size: 15px;
-	// 		.name {
-	// 			text-align: left;
-	// 			width: 70%;
-	// 		}
-	// 		.time {
-	// 			flex-grow: 1;
-	// 			text-align: right;
-	// 			width: 30%;
-	// 			min-width: 95px;
-	// 		}
-	// 	}
-	// 	> .time {
-	// 		display: inline-block;
-	// 		font-size: 15px;
-	// 		position: absolute;
-	// 		right: 0;
-	// 		bottom: 0;
-	// 		padding: 2px;
-	// 	}
-	// }
 }
 </style>
