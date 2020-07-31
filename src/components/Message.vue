@@ -68,7 +68,6 @@ export default Vue.extend({
 @import '../styles/settings.scss';
 .message {
 	&.tail {
-		background: red !important;
 	}
 	width: 100%;
 	display: flex;
@@ -87,8 +86,8 @@ export default Vue.extend({
 	> div {
 		white-space: pre-wrap;
 		position: relative;
-		margin-top: 2px;
-		margin-bottom: 2px;
+		margin-top: 1px;
+		margin-bottom: 1px;
 		border-radius: 7.5px;
 		background: white;
 		word-break: break-word;
