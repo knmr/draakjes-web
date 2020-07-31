@@ -1,7 +1,8 @@
 <template>
   <div
     class="message"
-    :class="{ me: msg.isMe }"
+    :class="{ me: msg.isMe, tail: addTail }"
+    :data-uid="msg.uid"
   >
     <div>
       <div class="name-time">
@@ -27,11 +28,27 @@ export default Vue.extend({
 		},
 	},
 	data() {
-		return {};
+		return {
+			addTail: false,
+		};
 	},
 	name: 'Message',
 	mounted() {
 		this.$emit('message');
+		this.initAddTail();
+	},
+	methods: {
+		initAddTail() {
+			const el = this.$el as HTMLElement;
+			const previous = this.$el.previousElementSibling as HTMLElement;
+			if (!previous) {
+				this.addTail = true;
+				return;
+			}
+			if (previous.dataset) {
+				this.addTail = previous.dataset.uid !== el.dataset.uid;
+			}
+		},
 	},
 	computed: {
 		getTime(): string {
@@ -50,6 +67,9 @@ export default Vue.extend({
 <style lang="scss">
 @import '../styles/settings.scss';
 .message {
+	&.tail {
+		background: red !important;
+	}
 	width: 100%;
 	display: flex;
 	flex-direction: row;
