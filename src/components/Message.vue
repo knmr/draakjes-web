@@ -1,12 +1,10 @@
 <template>
 	<div class="card message" :class="{ me: msg.isMe, tail: addTail }" :data-uid="msg.uid">
-		<div class="card-content">
-			<div class="name-time">
-				<div v-if="!msg.isMe" class="name">{{ msg.name }}</div>
-				<div class="time">{{ getTime }}</div>
-			</div>
-			<span>{{ msg.message }}</span>
+		<div class="card-header">
+			<div class="name" v-if="!msg.isMe">{{ msg.name }}</div>
+			<div class="time">{{ getTime }}</div>
 		</div>
+		<div class="card-content">{{ msg.message }}</div>
 	</div>
 </template>
 
@@ -63,6 +61,26 @@ export default Vue.extend({
 	&:hover {
 		transform: scale(1.1);
 	}
+
+	&.card {
+		.card-header {
+			color: rgba(0, 0, 0, 0.4);
+			height: 20px;
+			line-height: 20px;
+			padding: 10px 15px 0 15px;
+			.name {
+				float: left;
+			}
+			.time {
+				float: right;
+				font-size: 12px;
+			}
+		}
+		.card-content {
+			padding-top: 0px;
+		}
+	}
 	background: white;
+	word-wrap: break-word;
 }
 </style>

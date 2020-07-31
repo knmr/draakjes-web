@@ -34,10 +34,9 @@ export default Vue.extend({
 			grid-template-rows: auto 1fr auto;
 		}
 	}
-	font-family: 'Quicksand', sans-serif, Verdana, Geneva, sans-serif;
+	font-family: 'Poppins', sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-	font-weight: 300;
-	font-size: 20px;
+	font-size: 16px;
 }
 </style>

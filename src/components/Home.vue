@@ -174,6 +174,7 @@ export default Vue.extend({
 	}
 
 	> h1 {
+		font-size: 1.5em;
 		width: 80%;
 		margin: 0 auto;
 	}
