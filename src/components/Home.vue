@@ -4,10 +4,12 @@
 			<div class="stats col">.</div>
 			<div class="chat col">
 				<h1>Latest comments</h1>
-				<div v-if="needsDisplayName">
-					<div>Name:</div>
-					<input id="username" v-model="newDisplayName" placeholder="Your name" />
-					<button type="button" @click="setName">Set name</button>
+				<div v-if="needsDisplayName" class="name-input">
+					<TextInput
+						@input="newDisplayName = $event.target.value"
+						@save="setName"
+						placeholder="Your name"
+					/>
 				</div>
 				<MessageContainer v-show="messagesLoaded" :id="chatId" @scroll.native="onScroll">
 					<MessageComponent
@@ -30,6 +32,7 @@ import MessageInput from './MessageInput.vue';
 import MessageComponent from './Message.vue';
 import MessageContainer from './MessageContainer.vue';
 import MessagesLoading from './MessagesLoading.vue';
+import TextInput from './TextInput.vue';
 import { db, auth } from '../storage/firebase';
 import { debounce } from 'lodash';
 
@@ -39,6 +42,7 @@ export default Vue.extend({
 		MessageComponent,
 		MessageContainer,
 		MessagesLoading,
+		TextInput,
 	},
 	name: 'Home',
 	data() {
@@ -173,15 +177,22 @@ export default Vue.extend({
 		max-height: 140px;
 	}
 
-	> h1 {
-		font-size: 1.5em;
+	.name-input {
+		padding-bottom: 20px;
+	}
+	h1,
+	.message,
+	.name-input {
 		width: 80%;
 		margin: 0 auto;
 	}
 
+	> h1 {
+		font-size: 1.5em;
+	}
+
 	.message {
-		width: 80%;
-		margin: 20px auto 0 auto;
+		margin-top: 20px;
 	}
 }
 </style>
