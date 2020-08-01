@@ -4,13 +4,6 @@
 			<div class="stats col">.</div>
 			<div class="chat col">
 				<h1>Latest comments</h1>
-				<div v-if="needsDisplayName" class="name-input">
-					<TextInput
-						@input="newDisplayName = $event.target.value"
-						@save="setName"
-						placeholder="Your name"
-					/>
-				</div>
 				<MessageContainer v-show="messagesLoaded" :id="chatId" @scroll.native="onScroll">
 					<MessageComponent
 						v-for="(msg, index) in displayMessages"
@@ -19,7 +12,12 @@
 						@message="onNewMessage"
 					/>
 				</MessageContainer>
-				<MessageInput v-show="messagesLoaded" @send="sendMessage" />
+				<MessageInput
+					v-show="messagesLoaded"
+					@send="sendMessage"
+					:setupName="needsDisplayName"
+					@saveName="setName"
+				/>
 				<MessagesLoading v-show="!messagesLoaded" />
 			</div>
 		</div>
@@ -32,7 +30,6 @@ import MessageInput from './MessageInput.vue';
 import MessageComponent from './Message.vue';
 import MessageContainer from './MessageContainer.vue';
 import MessagesLoading from './MessagesLoading.vue';
-import TextInput from './TextInput.vue';
 import { db, auth } from '../storage/firebase';
 import { debounce } from 'lodash';
 
@@ -42,7 +39,6 @@ export default Vue.extend({
 		MessageComponent,
 		MessageContainer,
 		MessagesLoading,
-		TextInput,
 	},
 	name: 'Home',
 	data() {
@@ -50,7 +46,6 @@ export default Vue.extend({
 		return {
 			chatId,
 			messages: [],
-			newDisplayName: '',
 			displayName: '',
 			isLoggedIn: false,
 			autoScroll: true,
@@ -105,22 +100,21 @@ export default Vue.extend({
 					this.displayName = user.displayName ?? '';
 					this.isLoggedIn = true;
 				} else {
-					this.newDisplayName = '';
 					this.displayName = '';
 					this.isLoggedIn = false;
 				}
 			});
 			auth.signInAnonymously().catch((_error) => {});
 		},
-		setName() {
-			if (!this.newDisplayName) return;
+		setName(value) {
+			if (!value) return;
 			if (auth.currentUser)
 				auth.currentUser
 					.updateProfile({
-						displayName: this.newDisplayName,
+						displayName: value,
 					})
 					.then((_e) => {
-						this.displayName = this.newDisplayName;
+						this.displayName = value;
 					})
 					.catch((error) => {
 						console.error(error);
@@ -138,6 +132,8 @@ export default Vue.extend({
 			});
 		},
 		needsDisplayName() {
+			console.log(' needsDisplayName ');
+			console.log(this.displayName);
 			return this.isLoggedIn && this.displayName === '';
 		},
 	},
@@ -176,13 +172,8 @@ export default Vue.extend({
 	.message-input {
 		max-height: 140px;
 	}
-
-	.name-input {
-		padding-bottom: 20px;
-	}
 	h1,
-	.message,
-	.name-input {
+	.message {
 		width: 80%;
 		margin: 0 auto;
 	}

@@ -1,7 +1,7 @@
 <template>
 	<div class="card message" :class="{ me: msg.isMe, tail: addTail }" :data-uid="msg.uid">
 		<div class="card-header">
-			<div class="name" v-if="!msg.isMe">{{ msg.name }}</div>
+			<div class="name">{{ msg.name }}</div>
 			<div class="time">{{ getTime }}</div>
 		</div>
 		<div class="card-content">{{ msg.message }}</div>

@@ -1,6 +1,8 @@
 <template>
 	<div class="message-input">
+		<input v-if="setupName" v-model="name" placeholder="What is your name?" class="name" />
 		<span
+			v-else
 			:id="sendId"
 			class="textarea"
 			role="textbox"
@@ -9,7 +11,8 @@
 			@keyup="onKeyUp"
 		></span>
 		<a class="button" @click="send">
-			<PaperPlane />
+			<Check v-if="setupName" />
+			<PaperPlane v-else />
 		</a>
 	</div>
 </template>
@@ -17,6 +20,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import PaperPlane from '../icons/PaperPlane.vue';
+import Check from '../icons/Check.vue';
 export default Vue.extend({
 	data() {
 		const sendId = `send-input-${Date.now()}`;
@@ -24,10 +28,18 @@ export default Vue.extend({
 			sendId,
 			shiftPressed: false,
 			hasValue: false,
+			name: '',
 		};
+	},
+	props: {
+		setupName: {
+			type: Boolean,
+			default: false,
+		},
 	},
 	components: {
 		PaperPlane,
+		Check,
 	},
 	name: 'MessageInput',
 	methods: {
@@ -45,14 +57,25 @@ export default Vue.extend({
 				this.shiftPressed = false;
 			}
 		},
-		send() {
-			const sendInput = document.getElementById(this.sendId);
-			if (!sendInput) return;
-			const text = sendInput.innerText;
-			if (text && !/^\s*$/.test(text)) {
-				this.$emit('send', text);
+		getValue(): string {
+			let value = '';
+			if (this.setupName) {
+				return this.name;
+			} else {
+				const sendInput = document.getElementById(this.sendId);
+				if (sendInput) {
+					value = sendInput.innerText;
+					sendInput.innerText = '';
+				}
 			}
-			sendInput.innerText = '';
+			return value;
+		},
+		send() {
+			const text = this.getValue();
+			if (text && !/^\s*$/.test(text)) {
+				if (this.setupName) this.$emit('saveName', text);
+				else this.$emit('send', text);
+			}
 		},
 	},
 });
@@ -67,7 +90,13 @@ export default Vue.extend({
 	background: #ff6e6a;
 	display: flex;
 	align-items: flex-end;
-	.textarea {
+	// input.name {
+	// 	width: 100%;
+	// 	border-radius: 21px;
+	// 	background: white;
+	// }
+	.textarea,
+	input.name {
 		background: white;
 		width: 100%;
 		max-height: 30vh;
