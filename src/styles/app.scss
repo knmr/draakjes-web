@@ -2,107 +2,127 @@
 
 /* dm-sans-regular - latin */
 @font-face {
-	font-family: 'DM Sans';
-	font-style: normal;
-	font-weight: 400;
-	src: local('DM Sans Regular'), local('DMSans-Regular'),
-		url('../fonts/dm-sans-v4-latin-regular.woff2') format('woff2'),
-		/* Chrome 26+, Opera 23+, Firefox 39+ */ url('../fonts/dm-sans-v4-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+    font-family: 'DM Sans';
+    font-style: normal;
+    font-weight: 400;
+    src: local('DM Sans Regular'), local('DMSans-Regular'),
+        url('../fonts/dm-sans-v4-latin-regular.woff2') format('woff2'),
+        /* Chrome 26+, Opera 23+, Firefox 39+ */
+        url('../fonts/dm-sans-v4-latin-regular.woff') format('woff');
+    /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
+
 /* dm-sans-500 - latin */
 @font-face {
-	font-family: 'DM Sans';
-	font-style: normal;
-	font-weight: 500;
-	src: local('DM Sans Medium'), local('DMSans-Medium'),
-		url('../fonts/dm-sans-v4-latin-500.woff2') format('woff2'),
-		/* Chrome 26+, Opera 23+, Firefox 39+ */ url('../fonts/dm-sans-v4-latin-500.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+    font-family: 'DM Sans';
+    font-style: normal;
+    font-weight: 500;
+    src: local('DM Sans Medium'), local('DMSans-Medium'),
+        url('../fonts/dm-sans-v4-latin-500.woff2') format('woff2'),
+        /* Chrome 26+, Opera 23+, Firefox 39+ */
+        url('../fonts/dm-sans-v4-latin-500.woff') format('woff');
+    /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
 
 /* poppins-regular - latin */
 @font-face {
-	font-family: 'Poppins';
-	font-style: normal;
-	font-weight: 400;
-	src: local('Poppins Regular'), local('Poppins-Regular'),
-		url('../fonts/poppins-v12-latin-regular.woff2') format('woff2'),
-		/* Chrome 26+, Opera 23+, Firefox 39+ */ url('../fonts/poppins-v12-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Poppins Regular'), local('Poppins-Regular'),
+        url('../fonts/poppins-v12-latin-regular.woff2') format('woff2'),
+        /* Chrome 26+, Opera 23+, Firefox 39+ */
+        url('../fonts/poppins-v12-latin-regular.woff') format('woff');
+    /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
 
 * {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	outline: 0;
-	font-size: 100%;
-	vertical-align: baseline;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+    vertical-align: baseline;
 }
 
 body {
-	background-color: $cream;
+    background-color: $cream;
+}
+
+::-webkit-scrollbar {
+    width: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+    background: rgba(0, 0, 0, 0.2);
 }
 
 .page {
-	@media (min-width: 768px) {
-		max-width: 1400px;
-		max-height: 800px;
-		border-radius: $default-border-radius;
-	}
-	width: 100%;
-	height: 100%;
-	background-color: $white;
-	position: absolute;
-	left: 50%;
-	top: 50%;
-	transform: translate(-50%, -50%);
-	box-shadow: 2px 5px 20px 0 rgba(0, 0, 0, 0.2);
-	> .row {
-		height: 100%;
-		> .col {
-			@media (min-width: 768px) {
-				border-radius: $default-border-radius;
-			}
-			height: 100%;
-		}
-	}
+    @media (min-width: 768px) {
+        max-width: 1400px;
+        max-height: 800px;
+        border-radius: $default-border-radius;
+    }
+
+    width: 100%;
+    height: 100%;
+    background-color: $white;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 2px 5px 20px 0 rgba(0, 0, 0, 0.2);
+
+    >.row {
+        height: 100%;
+
+        >.col {
+            @media (min-width: 768px) {
+                border-radius: $default-border-radius;
+            }
+
+            height: 100%;
+        }
+    }
 }
 
 .card {
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-	transition: 0.3s;
-	border-radius: 20px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+    border-radius: 20px;
 
-	.card-header {
-		border-radius: 20px 20px 0 0;
-	}
+    .card-header {
+        border-radius: 20px 20px 0 0;
+    }
 
-	.card-content {
-		padding: 16px 16px;
-	}
+    .card-content {
+        padding: 16px 16px;
+    }
 }
 
 .card:hover {
-	box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 }
 
 .row {
-	display: -webkit-box;
-	display: -ms-flexbox;
-	display: flex;
-	-webkit-box-pack: justify;
-	-ms-flex-pack: justify;
-	justify-content: space-between;
-	-ms-flex-wrap: wrap;
-	flex-wrap: wrap;
-	-webkit-box-align: start;
-	-ms-flex-align: start;
-	align-items: flex-start;
-	--cols-per-row: 1;
-	--grid-gap: 0px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-box-align: start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+    --cols-per-row: 1;
+    --grid-gap: 0px;
 }
 
 .col {
-	-webkit-box-sizing: border-box;
-	box-sizing: border-box;
-	width: calc((100% - var(--grid-gap) * (var(--cols-per-row) - 1)) / var(--cols-per-row));
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    width: calc((100% - var(--grid-gap) * (var(--cols-per-row) - 1)) / var(--cols-per-row));
 }

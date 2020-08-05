@@ -1,27 +1,38 @@
 <template>
-	<div class="page">
-		<div class="row">
-			<div class="stats col">.</div>
-			<div class="chat col">
-				<h1>Latest comments</h1>
-				<MessageContainer v-show="messagesLoaded" :id="chatId" @scroll.native="onScroll">
-					<MessageComponent
-						v-for="(msg, index) in displayMessages"
-						:key="index"
-						:msg="msg"
-						@message="onNewMessage"
-					/>
-				</MessageContainer>
-				<MessageInput
-					v-show="messagesLoaded"
-					@send="sendMessage"
-					:setupName="needsDisplayName"
-					@saveName="setName"
-				/>
-				<MessagesLoading v-show="!messagesLoaded" />
-			</div>
-		</div>
-	</div>
+  <div class="page">
+    <div class="row">
+      <div class="main col">
+        <section id="history">
+          <History />
+        </section>
+        <section id="stats">
+          <Stats />
+        </section>
+      </div>
+      <div class="chat col">
+        <h1>Latest comments</h1>
+        <MessageContainer
+          v-show="messagesLoaded"
+          :id="chatId"
+          @scroll.native="onScroll"
+        >
+          <MessageComponent
+            v-for="(msg, index) in displayMessages"
+            :key="index"
+            :msg="msg"
+            @message="onNewMessage"
+          />
+        </MessageContainer>
+        <MessageInput
+          v-show="messagesLoaded"
+          @send="sendMessage"
+          :setupName="needsDisplayName"
+          @saveName="setName"
+        />
+        <MessagesLoading v-show="!messagesLoaded" />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -30,6 +41,8 @@ import MessageInput from './MessageInput.vue';
 import MessageComponent from './Message.vue';
 import MessageContainer from './MessageContainer.vue';
 import MessagesLoading from './MessagesLoading.vue';
+import History from './History.vue';
+import Stats from './Stats.vue';
 import { db, auth } from '../storage/firebase';
 import { debounce } from 'lodash';
 
@@ -39,6 +52,8 @@ export default Vue.extend({
 		MessageComponent,
 		MessageContainer,
 		MessagesLoading,
+		History,
+		Stats,
 	},
 	name: 'Home',
 	data() {
@@ -57,6 +72,7 @@ export default Vue.extend({
 	},
 	mounted() {
 		this.loginAnonymous();
+		document.getElementById('main');
 	},
 	methods: {
 		onScroll: debounce(function(e) {
@@ -132,8 +148,6 @@ export default Vue.extend({
 			});
 		},
 		needsDisplayName() {
-			console.log(' needsDisplayName ');
-			console.log(this.displayName);
 			return this.isLoggedIn && this.displayName === '';
 		},
 	},
@@ -143,7 +157,7 @@ export default Vue.extend({
 @import '../styles/settings.scss';
 
 @media (min-width: 768px) {
-	.stats {
+	.main {
 		--cols-per-row: 1.42857143;
 	}
 	.chat {
@@ -161,13 +175,6 @@ export default Vue.extend({
 		flex: 1;
 		overflow-x: hidden;
 		overflow-y: auto;
-		&::-webkit-scrollbar {
-			width: 4px;
-		}
-		&::-webkit-scrollbar-thumb {
-			border-radius: 2px;
-			background: rgba(0, 0, 0, 0.2);
-		}
 	}
 	.message-input {
 		max-height: 140px;
@@ -184,6 +191,22 @@ export default Vue.extend({
 
 	.message {
 		margin-top: 20px;
+	}
+}
+
+.main {
+	overflow-y: auto;
+	scroll-snap-type: y mandatory;
+	section {
+		padding: 30px;
+		height: 100%;
+		box-sizing: border-box;
+		scroll-snap-align: start;
+		overflow: hidden;
+		> * {
+			height: 100%;
+			overflow: hidden;
+		}
 	}
 }
 </style>
