@@ -208,5 +208,8 @@ export default Vue.extend({
 			overflow: hidden;
 		}
 	}
+	h1 {
+		font-size: 1.5em;
+	}
 }
 </style>
