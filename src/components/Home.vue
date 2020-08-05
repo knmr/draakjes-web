@@ -208,8 +208,15 @@ export default Vue.extend({
 			overflow: hidden;
 		}
 	}
-	h1 {
-		font-size: 1.5em;
+	div.header {
+		background-image: linear-gradient(to right, darkblue, rgba(255, 255, 255, 0));
+		border-top-left-radius: 25px;
+		width: 400px;
+		padding: 25px;
+		h1 {
+			color: white;
+			font-size: 1.5em;
+		}
 	}
 }
 </style>
