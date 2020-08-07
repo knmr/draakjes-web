@@ -198,7 +198,6 @@ export default Vue.extend({
 	overflow-y: auto;
 	scroll-snap-type: y mandatory;
 	section {
-		padding: 30px;
 		height: 100%;
 		box-sizing: border-box;
 		scroll-snap-align: start;
@@ -217,6 +216,9 @@ export default Vue.extend({
 			color: white;
 			font-size: 1.5em;
 		}
+	}
+	div.content {
+		padding: 0px 30px;
 	}
 }
 </style>
